@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ReservationStatus {
+  pending
+  confirmed
+  released
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  createdAt     DateTime       @default(now())
+
+  reservations  Reservation[]
+}
+
+model Product {
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String?
+  price         Decimal
+
+  inventories   Inventory[]
+  reservations  Reservation[]
+}
+
+model Warehouse {
+  id            Int            @id @default(autoincrement())
+  name          String
+  city          String
+
+  createdAt     DateTime       @default(now())
+
+  inventories   Inventory[]
+  reservations  Reservation[]
+}
+
+model Inventory {
+  id              Int        @id @default(autoincrement())
+
+  productId       Int
+  warehouseId     Int
+
+  totalStock      Int
+  reservedStock   Int        @default(0)
+
+  updatedAt       DateTime   @updatedAt
+
+  product          Product     @relation(fields: [productId], references: [id])
+  warehouse        Warehouse   @relation(fields: [warehouseId], references: [id])
+
+  @@unique([productId, warehouseId])
+}
+
+model Reservation {
+  id            Int                 @id @default(autoincrement())
+
+  userId        Int
+  productId     Int
+  warehouseId   Int
+
+  quantity      Int
+
+  status        ReservationStatus   @default(pending)
+
+  expiresAt     DateTime
+  confirmedAt   DateTime?
+
+  createdAt     DateTime            @default(now())
+
+  user          User                @relation(fields: [userId], references: [id])
+  product       Product             @relation(fields: [productId], references: [id])
+  warehouse     Warehouse           @relation(fields: [warehouseId], references: [id])
+}
