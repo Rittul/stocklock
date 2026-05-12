@@ -1,19 +1,20 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+require("./workers/worker");
 
-// const productRoutes = require("./routes/product.routes");
-// const warehouseRoutes = require("./routes/warehouse.routes");
-// const reservationRoutes = require("./routes/reservation.routes");
+const productRoutes = require("./routes/products");
+const warehouseRoutes = require("./routes/warehouse");
+const reservationRoutes = require("./routes/reservation");
 
 
 
 app.use(cors());
 app.use(express.json());
 
-// app.use("/api/products", productRoutes);
-// app.use("/api/warehouses", warehouseRoutes);
-// app.use("/api/reservations", reservationRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/warehouses", warehouseRoutes);
+app.use("/api/reservations", reservationRoutes);
 
 const PORT = process.env.PORT || 5000;
 
