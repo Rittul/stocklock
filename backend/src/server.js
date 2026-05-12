@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
+
+
 const cors = require("cors");
+
+app.use(cors());
 require("./workers/worker");
 
 const productRoutes = require("./routes/products");
@@ -9,7 +13,6 @@ const reservationRoutes = require("./routes/reservation");
 
 
 
-app.use(cors());
 app.use(express.json());
 
 app.use("/api/products", productRoutes);
