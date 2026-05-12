@@ -1,0 +1,66 @@
+services:
+
+  postgres:
+    image: postgres:16
+
+    container_name: stocklock-postgres
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 913@Rittul
+      POSTGRES_DB: stocklock
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+  redis:
+    image: redis:latest
+
+    container_name: stocklock-redis
+
+    ports:
+      - "6379:6379"
+
+
+  backend:
+    build: ./backend
+
+    container_name: stocklock-backend
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      DATABASE_URL: postgresql://postgres:913@Rittul@postgres:5432/stocklock?schema=public
+
+    depends_on:
+      - postgres
+      - redis
+
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+
+  frontend:
+    build: ./frontend
+
+    container_name: stocklock-frontend
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+
+volumes:
+  postgres_data:

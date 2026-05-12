@@ -17,6 +17,7 @@ function ReservationPage() {
   const [error, setError] = useState("");
 
   const [timeLeft, setTimeLeft] = useState("");
+  const [flag, setFlag] = useState(false);
 
   useEffect(() => {
 
@@ -89,7 +90,7 @@ function ReservationPage() {
   };
 
   const confirmReservation = async () => {
-
+    setFlag(!flag);
     try {
 
       setError("");
@@ -121,7 +122,7 @@ function ReservationPage() {
   };
 
   const cancelReservation = async () => {
-
+    setFlag(!flag);
     try {
 
       setError("");
@@ -264,14 +265,14 @@ function ReservationPage() {
           )
         }
 
-        <button
+        {flag && <button
 
           onClick={() => navigate("/products")}
 
           className="mt-8 bg-black text-white px-6 py-3 rounded-lg"
         >
           Back to Products
-        </button>
+        </button>}
 
       </div>
 

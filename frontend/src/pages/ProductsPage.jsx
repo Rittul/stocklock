@@ -73,10 +73,13 @@ function ProductsPage() {
       console.log(error);
 
       if (error.response?.status === 409) {
+        alert("Not enough stock available");
+        fetchProducts();
+        setError("Not enough stock available");
 
-        setError(
-          "Not enough stock available"
-        );
+        setTimeout(() => {
+          setError("");
+        }, 3000);
 
         return;
       }
