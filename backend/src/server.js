@@ -14,7 +14,9 @@ const reservationRoutes = require("./routes/reservation");
 
 
 app.use(express.json());
-
+app.get("/", (req, res) => {
+  res.send("Backend working");
+});
 app.use("/api/products", productRoutes);
 app.use("/api/warehouses", warehouseRoutes);
 app.use("/api/reservations", reservationRoutes);
