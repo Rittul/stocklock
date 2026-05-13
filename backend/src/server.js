@@ -7,7 +7,7 @@ const cors = require("cors");
 app.use(cors({
   origin: "*"
 }));
-// require("./workers/worker");
+require("./workers/worker");
 
 const productRoutes = require("./routes/products");
 const warehouseRoutes = require("./routes/warehouse");
