@@ -5,7 +5,10 @@ const redis = new Redis({
   port: process.env.REDIS_PORT,
   password: process.env.REDIS_PASSWORD,
   maxRetriesPerRequest: null,
-  tls: {}
 });
+
+if (process.env.NODE_ENV === "production") {
+  redisConfig.tls = {};
+}
 
 module.exports = redis;
