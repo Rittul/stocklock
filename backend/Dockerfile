@@ -12,4 +12,4 @@ RUN npx prisma generate
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD npx prisma migrate deploy && npm start
